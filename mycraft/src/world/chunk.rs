@@ -1,4 +1,5 @@
-use crate::world::biome::{Biome, BiomeSelector};
+use crate::world::biome;
+use crate::world::biome::{Biome};
 use crate::world::block::{Block, BlockFactory};
 use noise::{NoiseFn, Simplex};
 use std::cmp::{max, min};
@@ -31,7 +32,7 @@ const HEIGHT_AMPLIFIER: f64 = 1.2;
 pub struct Chunk {
     x: i32,
     y: i32,
-    chunk_map: HashMap<(i32, i32, i32), Block>,
+    pub chunk_map: HashMap<(i32, i32, i32), Block>,
 }
 
 impl Chunk {
@@ -162,8 +163,7 @@ impl Chunk {
                 .get([block_x_offset, block_y_offset, block_z_offset])
                 .abs();
 
-            let biome =
-                BiomeSelector::get_biome_by_params(temperature_noise_value, humidity_noise_value);
+            let biome = biome::get_biome_by_params(temperature_noise_value, humidity_noise_value);
 
             if z_coord > self.get_max_height(noise, x_coord, y_coord) - 5 {
                 if block_noise_value < 0.95 {
