@@ -40,6 +40,11 @@ impl Chunk {
         self.chunk_map.get(&(x, y, z))
     }
 
+    pub fn is_opaque(&self, x: i32, y: i32, z: i32) -> bool {
+        let key = (x, y, z);
+        !self.chunk_map.contains_key(&key) || self.chunk_map.get(&key).unwrap().is_opaque()
+    }
+
     pub fn generate(noise: &Simplex, x: i32, y: i32) -> Self {
         let mut chunk = Chunk {
             x,
