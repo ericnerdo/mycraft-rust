@@ -1,5 +1,5 @@
 use crate::world::biome;
-use crate::world::biome::{Biome};
+use crate::world::biome::Biome;
 use crate::world::block::{Block, BlockFactory};
 use noise::{NoiseFn, Simplex};
 use std::cmp::{max, min};
@@ -30,8 +30,8 @@ const MIN_HEIGHT: i32 = 1;
 const HEIGHT_AMPLIFIER: f64 = 1.2;
 
 pub struct Chunk {
-    x: i32,
-    y: i32,
+    pub x: i32,
+    pub y: i32,
     pub chunk_map: HashMap<(i32, i32, i32), Block>,
 }
 
