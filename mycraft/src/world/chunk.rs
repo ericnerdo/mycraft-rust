@@ -1,6 +1,6 @@
-use crate::world::biome;
-use crate::world::biome::Biome;
-use crate::world::block::{Block, BlockFactory};
+use super::biome;
+use super::biome::Biome;
+use super::block::{Block, BlockFactory};
 use noise::{NoiseFn, Simplex};
 use std::cmp::{max, min};
 use std::collections::HashMap;
