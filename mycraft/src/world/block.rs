@@ -1,5 +1,6 @@
 use std::fmt;
 
+#[derive(Clone)]
 pub enum BlockType {
     Dirt,
     Grass,
@@ -27,6 +28,7 @@ impl fmt::Display for BlockType {
     }
 }
 
+#[derive(Clone)]
 pub struct Block {
     block_type: BlockType,
     material_id: i32,
