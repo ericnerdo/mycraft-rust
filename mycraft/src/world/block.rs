@@ -53,7 +53,7 @@ impl BlockFactory {
     pub fn create_dirt() -> Block {
         Block {
             block_type: BlockType::Dirt,
-            material_id: 1,
+            material_id: 0,
             opaque: false,
         }
     }
@@ -61,7 +61,7 @@ impl BlockFactory {
     pub fn create_grass() -> Block {
         Block {
             block_type: BlockType::Grass,
-            material_id: 2,
+            material_id: 1,
             opaque: false,
         }
     }
@@ -69,7 +69,7 @@ impl BlockFactory {
     pub fn create_sand() -> Block {
         Block {
             block_type: BlockType::Sand,
-            material_id: 3,
+            material_id: 2,
             opaque: false,
         }
     }
@@ -77,7 +77,7 @@ impl BlockFactory {
     pub fn create_snow() -> Block {
         Block {
             block_type: BlockType::Snow,
-            material_id: 4,
+            material_id: 3,
             opaque: false,
         }
     }
@@ -85,7 +85,7 @@ impl BlockFactory {
     pub fn create_stone() -> Block {
         Block {
             block_type: BlockType::Stone,
-            material_id: 5,
+            material_id: 4,
             opaque: false,
         }
     }
@@ -93,7 +93,7 @@ impl BlockFactory {
     pub fn create_coal() -> Block {
         Block {
             block_type: BlockType::Coal,
-            material_id: 6,
+            material_id: 5,
             opaque: false,
         }
     }
@@ -101,7 +101,7 @@ impl BlockFactory {
     pub fn create_tree_log() -> Block {
         Block {
             block_type: BlockType::TreeLog,
-            material_id: 7,
+            material_id: 6,
             opaque: false,
         }
     }
@@ -109,7 +109,7 @@ impl BlockFactory {
     pub fn create_tree_leaf() -> Block {
         Block {
             block_type: BlockType::TreeLeaf,
-            material_id: 8,
+            material_id: 7,
             opaque: true,
         }
     }
