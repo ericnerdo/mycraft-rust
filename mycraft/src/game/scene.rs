@@ -1,6 +1,6 @@
+use super::block_renderer::create_block_mesh;
 use super::camera;
 use super::controller::CameraController;
-use super::block_renderer::create_block_mesh;
 use crate::graphics::{model, state};
 use crate::world::chunk;
 use cgmath::Rotation3;
@@ -26,7 +26,7 @@ impl Scene {
             camera,
             camera_controller,
             chunk_provider: chunk::ChunkProvider::default(),
-            last_render: (0, 0)
+            last_render: (0, 0),
         }
     }
 
@@ -127,11 +127,14 @@ impl Scene {
     }
 
     fn render_chunks(self: &mut Self, position: (i32, i32)) -> Vec<model::Mesh> {
-        let mut block_variations: HashMap<(i32, u8), ([bool; 6], Vec<model::Instance>)> = HashMap::new();
+        let mut block_variations: HashMap<(i32, u8), ([bool; 6], Vec<model::Instance>)> =
+            HashMap::new();
 
         for x_chunk in -5..=5 {
             for y_chunk in -5..=5 {
-                let chunk = self.chunk_provider.get_chunk(position.0 + x_chunk, position.1 + y_chunk);
+                let chunk = self
+                    .chunk_provider
+                    .get_chunk(position.0 + x_chunk, position.1 + y_chunk);
                 for block_entry in chunk.chunk_map.clone() {
                     let ((x, y, z), block) = block_entry;
                     let render_faces = [
@@ -168,16 +171,12 @@ impl Scene {
             }
         }
 
-
-        let mut meshes: Vec<model::Mesh> = Vec::new();
-        let keys: Vec<(i32, u8)> = block_variations.keys().copied().collect();
-
-        for idx in keys {
-            let (faces, instances) = block_variations.remove(&idx).unwrap();
-            let mesh = create_block_mesh(idx.0 as usize, faces, instances);
-
-            meshes.push(mesh);
-        }
+        let mut meshes: Vec<model::Mesh> = block_variations
+            .into_iter()
+            .map(|((material_id, _), (faces, instances))| {
+                create_block_mesh(material_id as usize, faces, instances)
+            })
+            .collect();
 
         meshes
     }
