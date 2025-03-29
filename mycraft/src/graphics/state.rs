@@ -14,7 +14,6 @@ pub struct Size {
 }
 
 pub struct State<'a> {
-    pub window: &'a winit::window::Window,
     surface: wgpu::Surface<'a>,
     device: wgpu::Device,
     queue: wgpu::Queue,
@@ -184,7 +183,6 @@ impl<'a> State<'a> {
         };
 
         Self {
-            window,
             surface,
             device,
             queue,

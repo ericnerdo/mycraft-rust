@@ -40,7 +40,7 @@ impl Scene {
         let mut last_render_time = instant::Instant::now();
 
         event_loop
-            .run(move |event, control_flow| {
+            .run(|event, control_flow| {
                 match event {
                     Event::DeviceEvent {
                         event: DeviceEvent::MouseMotion { delta },
@@ -49,7 +49,7 @@ impl Scene {
                     Event::WindowEvent {
                         ref event,
                         window_id,
-                    } if window_id == state.window.id() && !self.input(event) => {
+                    } if window_id == window.id() && !self.input(event) => {
                         match event {
                             WindowEvent::CloseRequested
                             | WindowEvent::KeyboardInput {
@@ -69,7 +69,7 @@ impl Scene {
                             }
                             WindowEvent::RedrawRequested => {
                                 // This tells winit that we want another frame after this one
-                                state.window.request_redraw();
+                                window.request_redraw();
 
                                 let now = instant::Instant::now();
                                 let dt = now - last_render_time;
