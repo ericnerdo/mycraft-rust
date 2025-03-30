@@ -10,6 +10,8 @@ use winit::event_loop::EventLoop;
 use winit::keyboard::{KeyCode, PhysicalKey};
 use winit::window::WindowBuilder;
 
+const CHUNK_RADIUS: i32 = 10;
+
 pub struct Scene {
     camera: camera::Camera,
     camera_controller: CameraController,
@@ -77,7 +79,11 @@ impl Scene {
                                 self.camera_controller.update_camera(&mut self.camera, dt);
                                 let chunk_x = (self.camera.position.x / 16.0) as i32;
                                 let chunk_y = (self.camera.position.z / 16.0) as i32;
-                                if self.last_render != (chunk_x, chunk_y) {
+                                if !is_point_within_circle(
+                                    &self.last_render,
+                                    &(chunk_x, chunk_y),
+                                    2,
+                                ) {
                                     self.last_render = (chunk_x, chunk_y);
                                     state.set_meshes(&self.render_chunks(self.last_render));
                                 }
@@ -130,8 +136,12 @@ impl Scene {
         let mut block_variations: HashMap<(i32, u8), ([bool; 6], Vec<model::Instance>)> =
             HashMap::new();
 
-        for x_chunk in -5..=5 {
-            for y_chunk in -5..=5 {
+        for x_chunk in -CHUNK_RADIUS..=CHUNK_RADIUS {
+            for y_chunk in -CHUNK_RADIUS..=CHUNK_RADIUS {
+                if !is_point_within_circle(&(0, 0), &(x_chunk, y_chunk), CHUNK_RADIUS) {
+                    continue;
+                }
+
                 let chunk = self
                     .chunk_provider
                     .get_chunk(position.0 + x_chunk, position.1 + y_chunk);
@@ -148,7 +158,7 @@ impl Scene {
                     if render_faces.contains(&true) {
                         let render_time = instant::Instant::now();
                         let block_index = bool_array_to_int(render_faces);
-                        println!("Block index calculated in {:?}", render_time.elapsed());
+                        // println!("Block index calculated in {:?}", render_time.elapsed());
                         let material_id = block.get_material_id();
                         let (_, instances) = block_variations
                             .entry((material_id, block_index))
@@ -191,4 +201,18 @@ fn bool_array_to_int(array: [bool; 6]) -> u8 {
     }
 
     value
+}
+
+fn is_point_within_circle((x, y): &(i32, i32), (x1, y1): &(i32, i32), radius: i32) -> bool {
+    if radius <= 0 {
+        return false;
+    }
+
+    let dx = x1 - x;
+    let dy = y1 - y;
+
+    let distance_squared = dx * dx + dy * dy;
+    let radius_squared = radius * radius;
+
+    distance_squared <= radius_squared
 }
