@@ -135,15 +135,15 @@ impl Scene {
                 let chunk = self
                     .chunk_provider
                     .get_chunk(position.0 + x_chunk, position.1 + y_chunk);
-                for block_entry in chunk.chunk_map.clone() {
+                for block_entry in chunk.chunk_map.iter() {
                     let ((x, y, z), block) = block_entry;
                     let render_faces = [
-                        chunk.is_opaque(x, y + 1, z),
-                        chunk.is_opaque(x, y - 1, z),
-                        chunk.is_opaque(x, y, z + 1),
-                        chunk.is_opaque(x, y, z - 1),
-                        chunk.is_opaque(x + 1, y, z),
-                        chunk.is_opaque(x - 1, y, z),
+                        chunk.is_opaque(*x, y + 1, *z),
+                        chunk.is_opaque(*x, y - 1, *z),
+                        chunk.is_opaque(*x, *y, z + 1),
+                        chunk.is_opaque(*x, *y, z - 1),
+                        chunk.is_opaque(x + 1, *y, *z),
+                        chunk.is_opaque(x - 1, *y, *z),
                     ];
                     if render_faces.contains(&true) {
                         let render_time = instant::Instant::now();
@@ -156,7 +156,7 @@ impl Scene {
                         // Create instance data for visible block
                         let position = cgmath::Vector3 {
                             x: (16 * chunk.x + x) as f32,
-                            y: z as f32,
+                            y: *z as f32,
                             z: (16 * chunk.y + y) as f32,
                         };
 
